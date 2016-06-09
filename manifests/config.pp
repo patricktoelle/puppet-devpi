@@ -1,3 +1,4 @@
+# Configures devpi
 class devpi::config (
   $user        = $::devpi::user,
   $group       = $::devpi::group,
@@ -8,17 +9,18 @@ class devpi::config (
   $proxy       = $::devpi::proxy,
 ) inherits ::devpi::params {
 
-  if $::devpi::params::systemd {
+  if $::devpi::params::service_provider == 'systemd' {
     $devpi_path = $virtualenv ? {
-      '' => '/usr/bin/devpi-server',
-      default => "${virtualenv}/bin/devpi-server"
+      '' => "${::devpi::params::bin_directory}/devpi-server",
+      default => "${virtualenv}bin/devpi-server"
     }
-    file { "/usr/lib/systemd/system/${::devpi::service_name}.service":
-      ensure  => $::devpi::ensure,
-      owner   => 'root',
-      group   => 'root',
-      mode    => '0644',
-      content => template("${module_name}/systemd.service.erb")
+    file {
+      "${::devpi::params::systemd_directory}${::devpi::service_name}.service":
+        ensure  => $::devpi::ensure,
+        owner   => 'root',
+        group   => 'root',
+        mode    => '0644',
+        content => template("${module_name}/systemd.service.erb"),
     }
   } else {
     file { "/etc/init/${::devpi::service_name}.conf":
@@ -26,8 +28,7 @@ class devpi::config (
       owner   => 'root',
       group   => 'root',
       mode    => '0644',
-      content => template("${module_name}/upstart.erb")
+      content => template("${module_name}/upstart.erb"),
     }
   }
-
 }

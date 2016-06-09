@@ -103,7 +103,7 @@ class devpi (
     Class['::devpi::service']
   }
 
-  if $::devpi::params::systemd {
+  if $::devpi::params::service_provider == 'systemd' {
     Class['::devpi::config'] ~>
     class {'::devpi::systemd': } ->
     Class['::devpi::service']

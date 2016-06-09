@@ -1,3 +1,5 @@
+# Params for class devpi
+
 class devpi::params {
   $user = 'devpi'
   $group = 'devpi'
@@ -8,12 +10,21 @@ class devpi::params {
   $proxy = undef
 
   case $::osfamily {
-    redhat: {
-      $systemd = $::operatingsystemmajrelease ? {
-        5       => false,
-        6       => false,
-        default => true
+    'redhat': {
+      $service_provider = $::operatingsystemmajrelease ? {
+        /(5|6)/  => 'upstart',
+        default  => 'systemd',
       }
+      $systemd_directory = '/usr/lib/systemd/system/'
+      $bin_directory = '/usr/bin/'
+    }
+    'debian': {
+      $service_provider = $::operatingsystemmajrelease ? {
+        /(6|7)/  => 'init',
+        default  => 'systemd',
+      }
+      $systemd_directory = '/lib/systemd/system/'
+      $bin_directory = '/usr/local/bin/'
     }
     default: {
       fail("Unsupported :osfamily ${::osfamily}")
