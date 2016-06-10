@@ -55,6 +55,9 @@
 # [*proxy*]
 #   HTTP url and port for http_proxy and https_proxy env variables (example: http://proxy.domain.tld:80)
 #
+# [*restrictmodify*]
+#   Boolean: Should modify access be restricted to user root?
+#
 # === Examples
 #
 # include ::devpi
@@ -81,6 +84,7 @@ class devpi (
   $server_dir      = $::devpi::params::server_dir,
   $virtualenv      = '',
   $proxy           = $::devpi::params::proxy,
+  $restrictmodify  = false,
 ) inherits devpi::params {
 
   anchor { '::devpi::start': } ->

@@ -6,7 +6,7 @@ After=basic.target network.target
 [Service]
 User=<%= @user %>
 Group=<%= @group %>
-ExecStart=<%= @devpi_path %> --host <%= @listen_host %> --port <%= @listen_port %> --serverdir <%= @server_dir %>
+ExecStart=<%= @devpi_path %> --host <%= @listen_host %> --port <%= @listen_port %> --serverdir <%= @server_dir %> <% if @restrictmodify -%>--restrict-modify root<% end -%>
 <% if @proxy -%>
 Environment=http_proxy=<%= @proxy %>
 Environment=https_proxy=<%= @proxy %>

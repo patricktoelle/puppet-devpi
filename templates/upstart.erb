@@ -15,4 +15,4 @@ start on runlevel [2345]
 stop on runlevel [!2345]
 respawn
 
-exec sudo -E -u <%= @user %> <% unless @virtualenv.empty? %><%= @virtualenv %>/bin/<% end %>devpi-server --host <%= @listen_host %> --port <%= @listen_port %> --serverdir <%= @server_dir %>
+exec sudo -E -u <%= @user %> <% unless @virtualenv.empty? %><%= @virtualenv %>/bin/<% end %>devpi-server --host <%= @listen_host %> --port <%= @listen_port %> --serverdir <%= @server_dir %> <% if @restrictmodify -%>--restrict-modify root<% end -%>

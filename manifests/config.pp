@@ -1,12 +1,13 @@
 # Configures devpi
 class devpi::config (
-  $user        = $::devpi::user,
-  $group       = $::devpi::group,
-  $listen_host = $::devpi::listen_host,
-  $listen_port = $::devpi::listen_port,
-  $server_dir  = $::devpi::server_dir,
-  $virtualenv  = $::devpi::virtualenv,
-  $proxy       = $::devpi::proxy,
+  $user           = $::devpi::user,
+  $group          = $::devpi::group,
+  $listen_host    = $::devpi::listen_host,
+  $listen_port    = $::devpi::listen_port,
+  $server_dir     = $::devpi::server_dir,
+  $virtualenv     = $::devpi::virtualenv,
+  $restrictmodify = $::devpi::restrictmodify,
+  $proxy          = $::devpi::proxy,
 ) inherits ::devpi::params {
 
   if $::devpi::params::service_provider == 'systemd' {
